@@ -1,0 +1,2 @@
+https://github.com/pyrogram/pyrogram/archive/v1.1.0.zip
+tgcrypto==1.2.2
