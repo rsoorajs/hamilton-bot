@@ -15,7 +15,6 @@ async def new_members(client, msg):
     except:
         welcome = "Olá {first_name}, seja bem vindo!"
     chat = msg.chat
-    print(msg.new_chat_members[0])
     for member in msg.new_chat_members:
         await client.send_message(
             chat.id,
