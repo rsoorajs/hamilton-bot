@@ -1,0 +1,84 @@
+{
+    "default": {
+        "welcome": "Welcome {first_name}!"
+    },
+    "commands": {
+        "group":{
+            "start": {
+                "ok": "Hello, I can administer this group if you give me admin permission and set me up."
+            },
+            "ban": {
+                "no_user": "Who should I banish? :)",
+                "failed": "Failed to ban user!",
+                "ok": "User banned."
+            },
+            "banall": {
+                "awaiting": "Okay, banning everyone...",
+                "finish": "Complete, all members of the group have been banned except the adminstradores."
+            },
+            "unban": {
+                "no_user": "Who should I unban?",
+                "failed": "Failed to unban user!",
+                "ok": "Okay, now this user can go back to the group."
+            },
+            "setwelcome": {
+                "no_message": "What's the welcome message?",
+                "failed": "Failed to update the welcome message!",
+                "ok": "Message updated successfully."
+            },
+            "setflood": {
+                "no_limit": "What's the new limit?",
+                "need_number": "I need a number!",
+                "failed": "Failed to set limit!",
+                "minimium": "The minimum value is 3!",
+                "ok": "Updated limit."
+            },
+            "getflood": {
+                "ok": "The current limit is {limit}"
+            },
+            "addfilter": {
+                "no_key": "What is the keyword for the filter?",
+                "failed": "Failed to add filter!",
+                "ok": "Filter added."
+            },
+            "getfilters": {
+                "no_filters": "This group has no active filters.",
+                "ok": "The following filters are available:"
+            },
+            "remfilter": {
+                "no_filter": "Which filter should I remove?",
+                "ok": "Filter removed."
+            },
+            "lang": {
+                "ok": "The current language is US English(en-us)"
+            },
+            "setlang": {
+                "no_code": "What is the language code?",
+                "not_found": "Language not found!",
+                "ok": "Updated language."
+            },
+            "langs": {
+                "list": "The following languages are available:"
+            },
+            "no_admin": {
+                "me": "I'm not an administrator!",
+                "you": "You're not an administrator!"
+            },
+            "kick": {
+                "no_user": "I don't know who I should remove.",
+                "failed":"Failed to remove user!",
+                "ok": "User removed."
+            },
+            "kickme": {
+                "admin": "I'm not going to remove you boss!",
+                "failed": "Failed to remove you!",
+                "ok": "Okay, I'm at your orders."
+            }
+        },
+        "private": {
+            "start": {
+                "ok": "Hello, I'm a group administration bot for telegram and I'm in development."
+            }
+        }
+    }
+}

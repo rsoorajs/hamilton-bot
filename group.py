@@ -29,7 +29,7 @@ async def testfilters(client, msg):
                 if k == file_type:
                     send = senders[k]
                     kwargs[k] = file_id
-                    if k == "sticker":
+                    if k == "sticker" and "caption" in kwargs:
                         kwargs.pop("caption")
                     break
             await send(**kwargs)
@@ -44,9 +44,9 @@ async def testflood(client, msg):
     try:
         limit = client.db.get_flood(msg.chat.id)[0][0]
     except Exception:
-        limit = 3
+        limit = 5
     if cid not in flood:
-        flood[cid] = [uid, time(), msg.isadmin, 1]
+        flood[cid] = [uid, time(), msg.from_user.isadmin, 1]
     else:
         if (flood[cid][3] == (limit - 1)) and (flood[cid][0] == uid) and \
           (not flood[cid][2]):
@@ -55,9 +55,10 @@ async def testflood(client, msg):
         elif (time() - flood[cid][1]) <= 5 and flood[cid][0] == uid:
             flood[cid][3] += 1
         else:
-            flood[cid] = [uid, time(), msg.isadmin, 1]
+            flood[cid] = [uid, time(), msg.from_user.isadmin, 1]
 
 
+# Função de obter id para evitar repetição de código em algumas partes
 async def get_id(client, msg, args):
     if args:
         if type(args[0]) is int:
@@ -72,7 +73,7 @@ async def get_id(client, msg, args):
     return uid
 
 
-# Ban && Unban
+# Banimento e desbanimento de usuários
 async def ban(client, msg, args):
     uid = await get_id(client, msg, args)
     if not uid:
@@ -114,7 +115,7 @@ async def banall(client, msg, args=None):
     await msg.reply(msg.lang["banall"]["finish"])
 
 
-# Welcome
+# Bem vindo
 async def setwelcome(client, msg, args):
     if not args:
         await msg.reply(msg.lang["setwelcome"]["no_message"])
@@ -127,7 +128,7 @@ async def setwelcome(client, msg, args):
     await msg.reply(msg.lang["setwelcome"]["ok"])
 
 
-# Flood
+# Sistema de controle de flood
 async def setflood(client, msg, args):
     if not args:
         await msg.reply(msg.lang["setflood"]["no_limit"])
@@ -136,6 +137,9 @@ async def setflood(client, msg, args):
         c = int(args[0])
     except Exception:
         await msg.reply(msg.lang["setflood"]["need_number"])
+        return
+    if c < 3:
+        await msg.reply(msg.lang["setflood"]["minimium"])
         return
     try:
         client.db.set_flood(msg.chat.id, c)
@@ -149,13 +153,13 @@ async def setflood(client, msg, args):
 async def getflood(client, msg, args=None):
     r = client.db.get_flood(msg.chat.id)
     if not r:
-        r = 3
+        r = 5
     else:
         r = r[0]
     await msg.reply(msg.lang["getflood"]["ok"].format(limit=r))
 
 
-# Filter
+# Filtros de mensagens
 async def addfilter(client, msg, args):
     kwargs = {"cid": msg.chat.id}
     text_t = " ".join(args)
@@ -233,10 +237,37 @@ async def getlangs(client, msg, args):
         text += "- `" + lang + "`\n"
     await msg.reply(text)
 
+
+# Saída temporária de um grupo
+async def kick(client, msg, args):
+    uid = await get_id(client, msg, args)
+    if not uid:
+        await msg.reply(msg.lang["kick"]["no_user"])
+        return
+    try:
+        await client.kick_chat_member(msg.chat.id, uid, until_date=5)
+    except Exception:
+        await msg.reply(msg.long["kick"]["failed"])
+        return
+    await msg.reply(msg.lang["kick"]["ok"])
+
+
+async def kickme(client, msg, args):
+    if msg.from_user.isadmin:
+        await msg.reply(msg.lang["kickme"]["admin"])
+        return
+    uid = msg.from_user.id
+    try:
+        await client.kick_chat_member(msg.chat.id, uid, until_date=5)
+    except Exception:
+        await msg.reply(msg.lang["kickme"]["failed"])
+        return
+    await msg.reply(msg.lang["kickme"]["ok"])
+
+
 #######################################
 # Sistema de verificação dos comandos #
 #######################################
-
 flood = {}
 for_administrator = {
     "/ban": ban,
@@ -246,7 +277,8 @@ for_administrator = {
     "/setflood": setflood,
     "/addfilter": addfilter,
     "/remfilter": remfilter,
-    "/setlang": setlang
+    "/setlang": setlang,
+    "/kick": kick
 }
 
 for_all = {
@@ -254,24 +286,25 @@ for_all = {
     "/flood": getflood,
     "/filters": getfilters,
     "/lang": lambda client, msg, args: msg.reply(msg.lang["lang"]["ok"]),
-    "/langs": getlangs
+    "/langs": getlangs,
+    "/kickme": kickme
 }
 
 
 async def handler(client, msg):
     client.select_lang(msg, "group")
+    me = await client.get_chat_member(msg.chat.id, "me")
+    me.isadmin = me.status == "administrator"
+    user = await client.get_chat_member(msg.chat.id, msg.from_user.id)
+    msg.from_user.isadmin = user.status in ("administrator", "creator")
     if not msg.text:
         await testflood(client, msg)
         return
     args = msg.text.split()
     command = args[0]
     args.remove(command)
-    me = await client.get_chat_member(msg.chat.id, "me")
-    me.isadmin = me.status == "administrator"
-    user = await client.get_chat_member(msg.chat.id, msg.from_user.id)
-    msg.isadmin = user.status in ("administrator", "creator")
     if command in for_administrator:
-        if not msg.isadmin:
+        if not msg.from_user.isadmin:
             await msg.reply(msg.lang["no_admin"]["you"])
             return
         await for_administrator[command](client, msg, args)

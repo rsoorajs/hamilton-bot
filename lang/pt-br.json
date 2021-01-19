@@ -30,6 +30,7 @@
                 "no_limit": "Qual o novo limite?",
                 "need_number": "Eu preciso de um número!",
                 "failed": "Falha ao definir limite!",
+                "minimium": "O valor minimo é 3!",
                 "ok": "Limite atualizado."
             },
             "getflood": {
@@ -62,6 +63,16 @@
             "no_admin": {
                 "me": "Eu não sou um administrador!",
                 "you": "Você não é um administrador!"
+            },
+            "kick": {
+                "no_user": "Não sei quem eu devo remover.",
+                "failed": "Falha ao remover usuário!",
+                "ok": "Usuário removido."
+            },
+            "kickme": {
+                "admin": "Eu não vou te remover chefe!",
+                "failed": "Falha ao remover você!",
+                "ok": "Ok, estou as suas ordens."
             }
         },
         "private": {
