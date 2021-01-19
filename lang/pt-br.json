@@ -1,0 +1,73 @@
+{
+    "default": {
+        "welcome": "Olá {first_name}, seja bem vindo(a)!"
+    },
+    "commands": {
+        "group":{
+            "start": {
+                "ok": "Olá, posso administrar esse grupo, para isso você só precisa me dar admin e me configurar."
+            },
+            "ban": {
+                "no_user": "Quem eu devo banir? :)",
+                "failed": "Falha ao banir usuário!",
+                "ok": "Usuário banido."
+            },
+            "banall": {
+                "awaiting": "Ok, banindo todo mundo...",
+                "finish": "Completo, todos os membros do grupo foram banidos menos os adminstradores."
+            },
+            "unban": {
+                "no_user": "Quem eu devo desbanir?",
+                "failed": "Falha ao desbanir usuário!",
+                "ok": "Ok, agora esté usuário pode voltar ao grupo."
+            },
+            "setwelcome": {
+                "no_message": "Qual a mensagem de boas vindas?",
+                "failed": "Falha ao atualizar a mensagem de boas vindas!",
+                "ok": "Mensagem atualizada com sucesso."
+            },
+            "setflood": {
+                "no_limit": "Qual o novo limite?",
+                "need_number": "Eu preciso de um número!",
+                "failed": "Falha ao definir limite!",
+                "ok": "Limite atualizado."
+            },
+            "getflood": {
+                "ok": "O limite atual é {limit}"
+            },
+            "addfilter": {
+                "no_key": "Qual a palavra chave para o filtro?",
+                "failed": "Falha ao adicionar filtro!",
+                "ok": "Filtro adicionado."
+            },
+            "getfilters": {
+                "no_filters": "Este grupo não tem nenhum filtro ativo.",
+                "ok": "Os seguintes filtros estão disponiveis:"
+            },
+            "remfilter": {
+                "no_filter": "Qual filtro eu devo remover?",
+                "ok": "Filtro removido."
+            },
+            "lang": {
+                "ok": "O idioma atual é o Português do Brasil(pt-br)"
+            },
+            "setlang": {
+                "no_code": "Qual o código do idioma?",
+                "not_found": "Idioma não encontrado!",
+                "ok": "Idioma atualizado."
+            },
+            "langs": {
+                "list": "Os seguintes idiomas estão disponiveis:"
+            },
+            "no_admin": {
+                "me": "Eu não sou um administrador!",
+                "you": "Você não é um administrador!"
+            }
+        },
+        "private": {
+            "start": {
+                "ok": "Olá, sou um bot de administração de grupos para telegram e estou em desenvolvimento."
+            }
+        }
+    }
+}

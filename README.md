@@ -8,7 +8,7 @@ Para instalar as dependências é simples, você só precisa executar `pip3 inst
 
 # Como configurar
 
-Você deve ir no site https://my.telegram.org e abrir a aba "API Development tools" e fazer o registro de um APP para poder pegar a `api_id` e `api_hash`, depois pegue o token do seu bot em https://t.me/BotFather para adicionar no arquivo `config.ini`, crie ele da seguinte forma:
+Você deve ir no site [My Telegram] e abrir a aba "API Development tools" e fazer o registro de um APP para poder pegar a `api_id` e `api_hash`, depois pegue o token do seu bot em [@BotFatcher] para adicionar no arquivo `config.ini`, crie ele da seguinte forma:
 
 ```ini
 [pyrogram]
@@ -18,3 +18,6 @@ bot_token = oTokenDoBot
 ```
 
 E pronto, agora é só iniciar o bot!
+
+[My Telegram]: <https://my.telegram.org>
+[@BotFatcher]: <https://t.me/BotFather>
