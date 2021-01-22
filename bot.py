@@ -2,11 +2,14 @@ from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 from json import load
 from os import listdir
+import database
+# Tipos de chats
+import alltypes
 import group
 import private
-import database
 
 app = Client("Hamilton-bot")
+app.all = alltypes
 app.db = database.crub(database.sqlite, file="banco.db")
 app.langs = {}
 for fname in listdir("lang/"):
@@ -29,8 +32,18 @@ def select_lang(msg, chat_type=None):
 app.select_lang = select_lang
 
 
+@app.on_callback_query()
+async def callback(client, msg):
+    args = msg.data.split()
+    command = args[0]
+    args.pop(0)
+    if command == "setlang":
+        await client.all.setlang(client, msg, args)
+
+
 @app.on_message(filters.new_chat_members)
 async def new_members(client, msg):
+    me = await client.get_me()
     client.select_lang(msg)
     try:
         welcome = app.db.getwelcome(msg.chat.id)
@@ -38,6 +51,9 @@ async def new_members(client, msg):
         welcome = msg.lang["default"]["welcome"]
     chat = msg.chat
     for member in msg.new_chat_members:
+        if member.id == me.id:
+            await client.send_message(chat.id, "Hello!")
+            continue
         await client.send_message(
             chat.id,
             text=welcome.format(

@@ -218,26 +218,6 @@ async def remfilter(client, msg, args):
     await msg.reply(msg.lang["remfilter"]["ok"])
 
 
-# Escolha e lista de linguagens
-async def setlang(client, msg, args):
-    if not args:
-        await msg.reply(msg.lang["setlang"]["no_code"])
-        return
-    if not args[0] in client.langs:
-        await msg.reply(msg.lang["setlang"]["not_found"])
-        return
-    client.db.set_lang(msg.chat.id, args[0])
-    client.select_lang(msg, "group")
-    await msg.reply(msg.lang["setlang"]["ok"])
-
-
-async def getlangs(client, msg, args):
-    text = msg.lang["langs"]["list"] + "\n\n"
-    for lang in client.langs.keys():
-        text += "- `" + lang + "`\n"
-    await msg.reply(text)
-
-
 # Saída temporária de um grupo
 async def kick(client, msg, args):
     uid = await get_id(client, msg, args)
@@ -277,7 +257,6 @@ for_administrator = {
     "/setflood": setflood,
     "/addfilter": addfilter,
     "/remfilter": remfilter,
-    "/setlang": setlang,
     "/kick": kick
 }
 
@@ -285,14 +264,15 @@ for_all = {
     "/start": lambda client, msg, args: msg.reply(msg.lang["start"]["ok"]),
     "/flood": getflood,
     "/filters": getfilters,
-    "/lang": lambda client, msg, args: msg.reply(msg.lang["lang"]["ok"]),
-    "/langs": getlangs,
     "/kickme": kickme
 }
 
 
 async def handler(client, msg):
+    if msg.left_chat_member:
+        return
     client.select_lang(msg, "group")
+    for_administrator["/setlang"] = client.all.getlangs
     me = await client.get_chat_member(msg.chat.id, "me")
     me.isadmin = me.status == "administrator"
     user = await client.get_chat_member(msg.chat.id, msg.from_user.id)

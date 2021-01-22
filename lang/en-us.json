@@ -1,9 +1,17 @@
 {
+    "name": "US English",
     "default": {
         "welcome": "Welcome {first_name}!"
     },
     "commands": {
-        "group":{
+        "all": {
+            "setlang": {
+                "not_found": "Language not found, sorry.",
+                "select": "Choose one language of list:",
+                "ok": "Updated language."
+            }
+        },
+        "group": {
             "start": {
                 "ok": "Hello, I can administer this group if you give me admin permission and set me up."
             },
@@ -51,14 +59,6 @@
             },
             "lang": {
                 "ok": "The current language is US English(en-us)"
-            },
-            "setlang": {
-                "no_code": "What is the language code?",
-                "not_found": "Language not found!",
-                "ok": "Updated language."
-            },
-            "langs": {
-                "list": "The following languages are available:"
             },
             "no_admin": {
                 "me": "I'm not an administrator!",
