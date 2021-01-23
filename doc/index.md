@@ -6,3 +6,4 @@ Bot para adiministração de grupos do Telgram em desenvolvimento usando o Pyrog
 Artigos:
 
   - [Instalação](instalacao.md)
+  - [Todos os comandos](comandos.md)
