@@ -9,9 +9,11 @@ import group
 import private
 
 if environ.get("CONFIG_URL"):
+    print("Downloading configuration file...")
     from urllib.request import urlretrieve
     url = environ.get("CONFIG_URL")
     urlretrieve(url, filename="config.ini")
+    print("Complete")
 
 app = Client("Hamilton-bot")
 app.all = alltypes
