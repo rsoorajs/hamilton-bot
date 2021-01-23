@@ -9,6 +9,9 @@
                 "select": "Selecione um dos idiomas:",
                 "not_found": "Idioma não encontrado!",
                 "ok": "Idioma atualizado."
+            },
+            "help": {
+                "ok": "Leia minha documentação no [github](https://github.com/dheisom-gomes/hamilton-bot)."
             }
         },
         "group": {

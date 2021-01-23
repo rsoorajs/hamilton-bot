@@ -273,6 +273,7 @@ async def handler(client, msg):
         return
     client.select_lang(msg, "group")
     for_administrator["/setlang"] = client.all.getlangs
+    for_all["/help"] = client.all.help
     me = await client.get_chat_member(msg.chat.id, "me")
     me.isadmin = me.status == "administrator"
     user = await client.get_chat_member(msg.chat.id, msg.from_user.id)
@@ -292,6 +293,7 @@ async def handler(client, msg):
         await for_all[command](client, msg, args)
     else:
         await testfilters(client, msg)
+    client.select_lang(msg, "group")
     if not me.isadmin:
         await msg.reply(msg.lang["no_admin"]["me"])
         return

@@ -1,6 +1,11 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
+async def help(client, msg, args):
+    client.select_lang(msg, "all")
+    await msg.reply(msg.lang["help"]["ok"])
+
+
 # Escolha e lista de linguagens
 async def setlang(client, msg, args):
     msg = msg.message

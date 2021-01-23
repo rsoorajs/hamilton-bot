@@ -6,6 +6,7 @@ commands = {
 async def handler(client, msg):
     client.select_lang(msg, "private")
     commands["/setlang"] = client.all.getlangs
+    commands["/help"] = client.all.help
     args = msg.text.split()
     command = args[0]
     args.remove(command)

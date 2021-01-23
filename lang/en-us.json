@@ -9,6 +9,9 @@
                 "not_found": "Language not found, sorry.",
                 "select": "Choose one language of list:",
                 "ok": "Updated language."
+            },
+            "help": {
+                "ok": "Read my doc on [github](https://github.com/dheisom-gomes/hamilton-bot)."
             }
         },
         "group": {
