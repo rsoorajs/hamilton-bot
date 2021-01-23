@@ -1,12 +1,17 @@
 from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 from json import load
-from os import listdir
+from os import listdir, environ
 import database
 # Tipos de chats
 import alltypes
 import group
 import private
+
+if environ.get("CONFIG_URL"):
+    from urllib.request import urlretrieve
+    url = environ.get("CONFIG_URL")
+    urlretrieve(url, filename="config.ini")
 
 app = Client("Hamilton-bot")
 app.all = alltypes
