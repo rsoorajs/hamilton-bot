@@ -12,6 +12,9 @@
             },
             "help": {
                 "ok": "Leia minha documentação no [github](https://github.com/dheisom-gomes/hamilton-bot)."
+            },
+            "channel": {
+                "ok": "Participe do canal do bot para ficar sabendo sobre as atualizações, é só clicar [aqui]({uri})!"
             }
         },
         "group": {
@@ -60,9 +63,6 @@
                 "no_filter": "Qual filtro eu devo remover?",
                 "ok": "Filtro removido."
             },
-            "lang": {
-                "ok": "O idioma atual é o Português do Brasil(pt-br)"
-            },
             "no_admin": {
                 "me": "Eu não sou um administrador!",
                 "you": "Você não é um administrador!"
@@ -76,6 +76,14 @@
                 "admin": "Eu não vou te remover chefe!",
                 "failed": "Falha ao remover você!",
                 "ok": "Ok, estou as suas ordens."
+            },
+            "setrules": {
+                "no_rules": "Você não me passou as regras!",
+                "failed": "Falha ao salvar regras.",
+                "ok": "Regras salvas com sucesso."
+            },
+            "rules": {
+                "no_rules": "Nenhuma regra encontrada."
             }
         },
         "private": {

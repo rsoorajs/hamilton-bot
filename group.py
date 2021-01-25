@@ -245,6 +245,28 @@ async def kickme(client, msg, args):
     await msg.reply(msg.lang["kickme"]["ok"])
 
 
+# Regras
+async def setrules(client, msg, args):
+    text = ' '.join(args)
+    if not text:
+        await msg.reply(msg.lang["setrules"]["no_rules"])
+        return
+    try:
+        client.db.set_rules(msg.chat.id, text)
+    except Exception:
+        await msg.reply(msg.lang["setrules"]["failed"])
+        return
+    await msg.reply(msg.lang["setrules"]["ok"])
+
+
+async def getrules(client, msg, args):
+    r = client.db.get_rules(msg.chat.id)
+    if not r:
+        await msg.reply(msg.lang["rules"]["no_rules"])
+    else:
+        await msg.reply(r[0][0])
+
+
 #######################################
 # Sistema de verificação dos comandos #
 #######################################
@@ -257,14 +279,16 @@ for_administrator = {
     "/setflood": setflood,
     "/addfilter": addfilter,
     "/remfilter": remfilter,
-    "/kick": kick
+    "/kick": kick,
+    "/setrules": setrules
 }
 
 for_all = {
     "/start": lambda client, msg, args: msg.reply(msg.lang["start"]["ok"]),
     "/flood": getflood,
     "/filters": getfilters,
-    "/kickme": kickme
+    "/kickme": kickme,
+    "/rules": getrules
 }
 
 
@@ -274,6 +298,7 @@ async def handler(client, msg):
     client.select_lang(msg, "group")
     for_administrator["/setlang"] = client.all.getlangs
     for_all["/help"] = client.all.help
+    for_all["/channel"] = client.all.channel
     me = await client.get_chat_member(msg.chat.id, "me")
     me.isadmin = me.status == "administrator"
     user = await client.get_chat_member(msg.chat.id, msg.from_user.id)

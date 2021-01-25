@@ -17,6 +17,7 @@ if environ.get("CONFIG_URL"):
 
 app = Client("Hamilton-bot")
 app.all = alltypes
+app.conf = load(open("bot.json"))
 app.db = database.crub(database.sqlite, file="banco.db")
 app.langs = {}
 for fname in listdir("lang/"):

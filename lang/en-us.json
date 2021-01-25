@@ -12,6 +12,9 @@
             },
             "help": {
                 "ok": "Read my doc on [github](https://github.com/dheisom-gomes/hamilton-bot)."
+            },
+            "channel": {
+                "ok": "Join the bot channel to learn about the updates, just click [here]({uri})!"
             }
         },
         "group": {
@@ -60,9 +63,6 @@
                 "no_filter": "Which filter should I remove?",
                 "ok": "Filter removed."
             },
-            "lang": {
-                "ok": "The current language is US English(en-us)"
-            },
             "no_admin": {
                 "me": "I'm not an administrator!",
                 "you": "You're not an administrator!"
@@ -76,6 +76,14 @@
                 "admin": "I'm not going to remove you boss!",
                 "failed": "Failed to remove you!",
                 "ok": "Okay, I'm at your orders."
+            },
+            "setrules": {
+                "no_rules": "No rules informed!",
+                "failed": "Failed to save rules.",
+                "ok": "Rules saved with successfully."
+            },
+            "rules": {
+                "no_rules": "No rules found."
             }
         },
         "private": {

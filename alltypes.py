@@ -40,3 +40,11 @@ async def getlangs(client, msg, args):
             ]
         )
     await msg.reply(text, reply_markup=InlineKeyboardMarkup(buttons))
+
+
+async def channel(client, msg, args):
+    client.select_lang(msg, "all")
+    if "channel" in client.conf:
+        await msg.reply(
+            msg.lang["channel"]["ok"].format(uri=client.conf["channel"])
+        )

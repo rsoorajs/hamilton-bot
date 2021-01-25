@@ -59,11 +59,26 @@ class crub:
                 code TEXT
             );"""
         )
+        self.conn.execute(
+            """CREATE TABLE IF NOT EXISTS rules(
+                id INTEGER,
+                rule TEXT
+            );"""
+        )
         self.conn.save()
 
     # Welcome
+    def get_welcome(self, cid):
+        r = self.conn.execute(
+            f"SELECT (hello) FROM welcome WHERE id = '{cid}';"
+        )[0][0]
+        return r
+
     def set_welcome(self, cid, text):
-        r = self.conn.execute(f"SELECT * FROM welcome WHERE id = '{cid}';")
+        try:
+            r = self.get_welcome(cid)
+        except Exception:
+            r = None
         if r:
             self.conn.execute(
                 f"UPDATE welcome SET hello = '{text}' WHERE id = '{cid}';"
@@ -74,15 +89,15 @@ class crub:
             )
         self.conn.save()
 
-    def get_welcome(self, cid):
+    # Flood
+    def get_flood(self, cid):
         r = self.conn.execute(
-            f"SELECT (hello) FROM welcome WHERE id = '{cid}';"
-        )[0][0]
+            f"SELECT (amount) FROM flood WHERE id = '{cid}';"
+        )
         return r
 
-    # Flood
     def set_flood(self, cid, limit):
-        r = self.conn.execute(f"SELECT * FROM flood WHERE id = '{cid}';")
+        r = self.get_flood(cid)
         if r:
             self.conn.execute(
                 f"UPDATE flood SET amount = '{limit}' WHERE id = '{cid}';"
@@ -93,17 +108,22 @@ class crub:
             )
         self.conn.save()
 
-    def get_flood(self, cid):
+    # Filter
+    def get_filter(self, cid, key):
         r = self.conn.execute(
-            f"SELECT (amount) FROM flood WHERE id = '{cid}';"
+            f"""SELECT caption, file_id, file_type FROM filters
+            WHERE
+                id = '{cid}' AND
+                word = '{key}';"""
         )
         return r
 
-    # Filter
+    def get_filters(self, cid):
+        r = self.conn.execute(f"SELECT word FROM filters WHERE id = '{cid}';")
+        return r
+
     def add_filter(self, cid, key, caption="", file_id="", file_type=""):
-        r = self.conn.execute(
-            f"SELECT * FROM filters WHERE id = '{cid}' AND word = '{key}';"
-        )
+        r = self.get_filter(cid, key)
         if r:
             self.conn.execute(
                 f"""UPDATE filters SET
@@ -126,19 +146,6 @@ class crub:
             )
         self.conn.save()
 
-    def get_filters(self, cid):
-        r = self.conn.execute(f"SELECT word FROM filters WHERE id = '{cid}';")
-        return r
-
-    def get_filter(self, cid, key):
-        r = self.conn.execute(
-            f"""SELECT caption, file_id, file_type FROM filters
-            WHERE
-                id = '{cid}' AND
-                word = '{key}';"""
-        )
-        return r
-
     def rem_filter(self, cid, key):
         self.conn.execute(
             f"DELETE FROM filters WHERE id = '{cid}' AND word = '{key}';"
@@ -146,8 +153,12 @@ class crub:
         self.conn.save()
 
     # Language
+    def get_lang(self, cid):
+        r = self.conn.execute(f"SELECT code FROM language WHERE id = '{cid}';")
+        return r
+
     def set_lang(self, cid, lang):
-        r = self.conn.execute(f"SELECT * FROM language WHERE id = '{cid}';")
+        r = self.get_lang(cid)
         if r:
             self.conn.execute(
                 f"""UPDATE language SET code = '{lang}'
@@ -159,6 +170,18 @@ class crub:
             )
         self.conn.save()
 
-    def get_lang(self, cid):
-        r = self.conn.execute(f"SELECT code FROM language WHERE id = '{cid}';")
+    # Rules
+    def get_rules(self, cid):
+        r = self.conn.execute(f"SELECT rule FROM rules WHERE id = '{cid}';")
         return r
+
+    def set_rules(self, cid, rules):
+        rules = rules.replace("'", "''")
+        r = self.get_rules(cid)
+        if r:
+            self.conn.execute(
+                f"UPDATE FROM rules SET rule = '{rules}' WHERE id = '{cid}';"
+            )
+        else:
+            self.conn.execute(f"INSERT INTO rules VALUES ('{cid}', '{rules}')")
+        self.conn.save()
