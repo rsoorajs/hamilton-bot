@@ -6,8 +6,9 @@
     "commands": {
         "all": {
             "setlang": {
-                "select": "Selecione um dos idiomas:",
                 "not_found": "Idioma não encontrado!",
+                "not_admin": "Você não é um adminstrador!",
+                "select": "Selecione um dos idiomas:",
                 "ok": "Idioma atualizado."
             },
             "help": {

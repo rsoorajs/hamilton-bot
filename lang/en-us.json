@@ -7,6 +7,7 @@
         "all": {
             "setlang": {
                 "not_found": "Language not found, sorry.",
+                "not_admin": "You is not an administrtor!",
                 "select": "Choose one language of list:",
                 "ok": "Updated language."
             },

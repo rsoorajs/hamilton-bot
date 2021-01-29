@@ -7,9 +7,19 @@ async def help(client, msg, args):
 
 
 # Escolha e lista de linguagens
-async def setlang(client, msg, args):
-    msg = msg.message
+# - Callback de resposta
+async def setlang(client, callback, args):
+    msg = callback.message
     client.select_lang(msg, "all")
+    if msg.chat.type in ("group", "supergroup"):
+        info = await client.get_chat_member(msg.chat.id, callback.from_user.id)
+        if info.status not in ("administrator", "creator"):
+            await client.answer_callback_query(
+                callback.id,
+                msg.lang["setlang"]["not_admin"],
+                show_alert=True
+            )
+            return
     if not args[0] in client.langs:
         await client.edit_message_text(
             message_id=msg.message_id,
@@ -24,8 +34,10 @@ async def setlang(client, msg, args):
         chat_id=msg.chat.id,
         text=msg.lang["setlang"]["ok"]
     )
+    await client.answer_callback_query(callback.id, "Ok.")
 
 
+# - Envia a lista de botões com os idiomas
 async def getlangs(client, msg, args):
     client.select_lang(msg, "all")
     text = msg.lang["setlang"]["select"] + "\n\n"
