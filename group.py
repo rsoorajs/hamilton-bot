@@ -157,7 +157,7 @@ async def getflood(client, msg, args=None):
     if not r:
         r = 5
     else:
-        r = r[0]
+        r = r[0][0]
     await msg.reply(msg.lang["getflood"]["ok"].format(limit=r))
 
 

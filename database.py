@@ -1,14 +1,19 @@
-from sqlite3 import connect as sqlite_conn
-
-
-class sqlite:
-    def __init__(self, file):
-        self.file = file
+class connect:
+    def __init__(self, func, database=None, *args, **kwargs):
+        self.connector = func
+        self.login = [args, kwargs]
+        self.database = database
         self.db = self.connect()
 
     def connect(self):
-        self.connection = sqlite_conn(self.file)
+        self.connection = self.connector(*self.login[0], **self.login[1])
         self.cursor = self.connection.cursor()
+        if self.database:
+            self.cursor.execute(
+                f"CREATE DATABASE IF NOT EXISTS `{self.database}` DEFAULT \
+                CHARSET utf8 COLLATE = utf8_general_ci;"
+            )
+            self.cursor.execute(f"USE `{self.database}`")
 
     def close(self):
         self.connection.close()
@@ -28,25 +33,25 @@ class sqlite:
 
 
 class crub:
-    def __init__(self, sql, database=None,  **kwargs):
-        self.conn = sql(**kwargs)
+    def __init__(self, sql, database=None, *args, **kwargs):
+        self.conn = connect(sql, database, *args, **kwargs)
         if database:
             self.conn.execute(f"USE {database};")
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS flood(
-                id INTEGER,
-                amount INTEGER
+                id BIGINT,
+                amount BIGINT
             );"""
         )
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS welcome(
-                id INTEGER,
+                id BIGINT,
                 hello TEXT
             );"""
         )
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS filters(
-                id INTEGER,
+                id BIGINT,
                 word TEXT,
                 caption TEXT,
                 file_id TEXT,
@@ -55,13 +60,13 @@ class crub:
         )
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS language(
-                id INTEGER,
+                id BIGINT,
                 code TEXT
             );"""
         )
         self.conn.execute(
             """CREATE TABLE IF NOT EXISTS rules(
-                id INTEGER,
+                id BIGINT,
                 rule TEXT
             );"""
         )
@@ -70,7 +75,7 @@ class crub:
     # Welcome
     def get_welcome(self, cid):
         r = self.conn.execute(
-            f"SELECT (hello) FROM welcome WHERE id = '{cid}';"
+            f"SELECT hello FROM welcome WHERE id = '{cid}';"
         )[0][0]
         return r
 
@@ -92,7 +97,7 @@ class crub:
     # Flood
     def get_flood(self, cid):
         r = self.conn.execute(
-            f"SELECT (amount) FROM flood WHERE id = '{cid}';"
+            f"SELECT amount FROM flood WHERE id = '{cid}';"
         )
         return r
 

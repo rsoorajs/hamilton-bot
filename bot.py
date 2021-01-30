@@ -2,26 +2,39 @@ from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
 from json import load
 from os import listdir, environ
+from urllib.request import urlretrieve
+# Bancos de dados
+import mysql.connector
 import database
 # Tipos de chats
 import alltypes
 import group
 import private
 
-if environ.get("CONFIG_URL"):
-    print("Downloading configuration file...")
-    from urllib.request import urlretrieve
-    url = environ.get("CONFIG_URL")
-    urlretrieve(url, filename="config.ini")
+
+configs = {
+    "CONFIG_URL": "config.ini",
+    "BOT_CONFIG": "bot_config.json"
+}
+
+for k in configs.keys():
+    url = environ.get(k)
+    if not url:
+        continue
+    print(f"Downloading {configs[k]} configuration file...")
+    urlretrieve(url, filename=configs[k])
     print("Complete")
 
 app = Client("Hamilton-bot")
 app.all = alltypes
-app.conf = load(open("bot.json"))
-app.db = database.crub(database.sqlite, file="banco.db")
+app.conf = load(open("bot_config.json"))
+app.db = database.crub(mysql.connector.connect, **app.conf["mysql"])
 app.langs = {}
 for fname in listdir("lang/"):
-    code = fname.split(".")[0]
+    s = fname.split(".")
+    if s[1] != "json":
+        continue
+    code = s[0]
     app.langs[code] = load(open("lang/"+fname))
 
 

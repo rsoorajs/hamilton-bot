@@ -1,5 +1,6 @@
 Hamilton-bot.session
 config.ini
+bot_config.json
 __pycache__
 banco.db
 .vscode
