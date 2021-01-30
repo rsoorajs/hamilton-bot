@@ -1,5 +1,7 @@
 from time import time
 from re import search
+from json import loads
+from pyrogram.types import ChatPermissions
 
 
 # Sistema de filtros dos chats
@@ -267,6 +269,50 @@ async def getrules(client, msg, args):
         await msg.reply(r[0][0])
 
 
+# Silenciar
+async def mute(client, msg, args):
+    uid = await get_id(client, msg, args)
+    if not uid:
+        await msg.reply(msg.lang["mute"]["no_user"])
+        return
+    user = await client.get_chat_member(msg.chat.id, uid)
+    user.isadmin = user.status in ("administrator", "creator")
+    if user.isadmin:
+        await msg.reply(msg.lang["mute"]["admin"])
+        return
+    try:
+        await client.restrict_chat_member(
+            msg.chat.id,
+            uid,
+            ChatPermissions(),
+            int(time() + 2073600)
+        )
+    except Exception:
+        await msg.reply(msg.lang["mute"]["failed"])
+        return
+    await msg.reply(msg.lang["mute"]["ok"])
+
+
+async def unmute(client, msg, args):
+    uid = await get_id(client, msg, args)
+    if not uid:
+        await msg.reply(msg.lang["unmute"]["no_user"])
+        return
+    permissions = loads(str(msg.chat.permissions))
+    permissions.pop("_")
+    try:
+        await client.restrict_chat_member(
+            msg.chat.id,
+            uid,
+            ChatPermissions(**permissions)
+        )
+    except Exception as error:
+        print(error)
+        await msg.reply(msg.lang["unmute"]["failed"])
+        return
+    await msg.reply(msg.lang["unmute"]["ok"])
+
+
 #######################################
 # Sistema de verificação dos comandos #
 #######################################
@@ -280,7 +326,9 @@ for_administrator = {
     "/addfilter": addfilter,
     "/remfilter": remfilter,
     "/kick": kick,
-    "/setrules": setrules
+    "/setrules": setrules,
+    "/mute": mute,
+    "/unmute": unmute
 }
 
 for_all = {

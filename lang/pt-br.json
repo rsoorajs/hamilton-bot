@@ -85,6 +85,17 @@
             },
             "rules": {
                 "no_rules": "Nenhuma regra encontrada."
+            },
+            "mute": {
+                "no_user": "Quem eu devo silenciar?",
+                "admin": "Eu não posso silenciar um admin!",
+                "failed": "Falha ao silenciar usuário",
+                "ok": "Usuário silenciado."
+            },
+            "unmute": {
+                "no_user": "Eu não sei quem deve voltar a falar no grupo.",
+                "failed": "Falha ao mudar permissões do usuário!",
+                "ok": "Ok, agora o usuário pode voltar a falar no grupo."
             }
         },
         "private": {

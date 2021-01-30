@@ -19,3 +19,5 @@ Aqui temos uma lista com todos comandos disponiveis ate o momento:
 | /addfilter  | Grupo  | Administrador | Adiciona um filtro.                                         |
 | /remfilter  | Grupo  | Administrador | Remove um filtro.                                           |
 | /filters    | Grupo  | Todos         | Obtem os filtros ativos no grupo.                           |
+| /mute       | Grupo  | Administrador | Silencia um membro.                                         |
+| /unmute     | Grupo  | Administrador | Volta todas as permissões padrões para o membro.            |
