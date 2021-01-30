@@ -1,4 +1,7 @@
 class connect:
+    connection = None
+    cursor = None
+
     def __init__(self, func, database=None, *args, **kwargs):
         self.connector = func
         self.login = [args, kwargs]
@@ -8,6 +11,8 @@ class connect:
     def connect(self):
         self.connection = self.connector(*self.login[0], **self.login[1])
         self.cursor = self.connection.cursor()
+        if "autocommit" in dir(self.connection):
+            self.connection.autocommit = True
         if self.database:
             self.cursor.execute(
                 f"CREATE DATABASE IF NOT EXISTS `{self.database}` DEFAULT \
@@ -19,13 +24,23 @@ class connect:
         self.connection.close()
 
     def save(self):
-        self.connection.commit()
+        try:
+            self.connection.commit()
+            self.connection.disconnect()
+        except Exception:
+            pass
         self.close()
         self.connect()
 
-    def execute(self, cmd):
-        self.connection.ping()
-        self.cursor.execute(cmd)
+    def execute(self, cmd, err=False):
+        try:
+            self.connection.ping()
+            self.cursor.execute(cmd)
+        except Exception:
+            if err:
+                raise Exception
+            self.save()
+            self.execute(cmd, err=True)
         try:
             r = self.cursor.fetchall()
         except Exception:
