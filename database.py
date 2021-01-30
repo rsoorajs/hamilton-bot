@@ -24,6 +24,7 @@ class connect:
         self.connect()
 
     def execute(self, cmd):
+        self.conn.ping()
         self.cursor.execute(cmd)
         try:
             r = self.cursor.fetchall()
