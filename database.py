@@ -13,7 +13,7 @@ class connect:
                 f"CREATE DATABASE IF NOT EXISTS `{self.database}` DEFAULT \
                 CHARSET utf8 COLLATE = utf8_general_ci;"
             )
-            self.cursor.execute(f"USE `{self.database}`")
+            self.cursor.execute(f"USE `{self.database}`;")
 
     def close(self):
         self.connection.close()
@@ -24,7 +24,7 @@ class connect:
         self.connect()
 
     def execute(self, cmd):
-        self.conn.ping()
+        self.connection.ping()
         self.cursor.execute(cmd)
         try:
             r = self.cursor.fetchall()
