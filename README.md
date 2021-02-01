@@ -38,7 +38,7 @@ Com isso pronto, agora você vai precisar configurar o banco de dados e o canal 
 }
 ```
 
-Você pode mudar de banco de dados para outro compativél com o MySQL trocando o primeiro argumento do comando `app.db = database.crub(...)`, você também pode mudar o nome da chave `mysql` mostrada aqui pelo nome do seu sistema de banco de dados, caso algum comando não seja compativél você pode editar o arquivo `database.py` para corrigir, depois disso é só subir o arquivo e pegar o link, com tudo pronto, agora é hora de informar ao bot onde que estão as configurações dele, você só precisar fazer isso uma vez se não apagar os arquivos `config.ini` e `bot_config.json` que iram ser criados, vamos definir as variáveis de ambiente que o bot vai usar:
+Você pode mudar de banco de dados para outro compativél com o MySQL trocando o primeiro argumento do comando `app.db = database.crub(...)`, você também pode mudar o nome da chave `mysql` mostrada aqui pelo nome do seu sistema de banco de dados, caso algum comando não seja compativél você pode editar o arquivo `bot/database.py` para corrigir, depois disso é só subir o arquivo e pegar o link, com tudo pronto, agora é hora de informar ao bot onde que estão as configurações dele, você só precisar fazer isso uma vez se não apagar os arquivos `config.ini` e `bot_config.json` que iram ser criados, vamos definir as variáveis de ambiente que o bot vai usar:
 
 ```bash
 $ export CONFIG_URL="Aqui vai o link da primeira configuração, ela é do pyrogram"
