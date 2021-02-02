@@ -1,9 +1,4 @@
-def create_table(name: str, **kwargs) -> str:
-    result: str = f"CREATE TABLE IF NOT EXISTS `{name}`("
-    for key in kwargs.keys():
-        result += f"{key} {str(kwargs[key]).upper()}, "
-    result = result[:-2] + ");"
-    return result
+from sql_commands import create_table, insert, delete, update, select
 
 
 class connect:
@@ -80,54 +75,44 @@ class crub:
     # Welcome
     def get_welcome(self, cid: int) -> list:
         result: list = self.conn.execute(
-            f"SELECT hello FROM welcome WHERE id = '{cid}';"
+            select("hello", ["welcome"], {"id": cid})
         )
         return result
 
     def set_welcome(self, cid: int, text: str) -> None:
         welcome: list = self.get_welcome(cid)
         if welcome:
-            self.conn.execute(
-                f"UPDATE welcome SET hello = '{text}' WHERE id = '{cid}';"
-            )
+            self.conn.execute(update("welcome", {"id": cid}, hello=text))
         else:
-            self.conn.execute(
-                f"INSERT INTO welcome VALUES ('{cid}', '{text}');"
-            )
+            self.conn.execute(insert("welcome", id=cid, hello=text))
         self.conn.save()
 
     # Flood
     def get_flood(self, cid: int) -> list:
         result: list = self.conn.execute(
-            f"SELECT amount FROM flood WHERE id = '{cid}';"
+            select("flood", ["amount"], {"id": cid})
         )
         return result
 
     def set_flood(self, cid: int, limit: int) -> None:
         flood: list = self.get_flood(cid)
         if flood:
-            self.conn.execute(
-                f"UPDATE flood SET amount = '{limit}' WHERE id = '{cid}';"
-            )
+            self.conn.execute(update("flood", {"id": cid}, amount=limit))
         else:
-            self.conn.execute(
-                f"INSERT INTO flood VALUES ('{cid}', '{limit}');"
-            )
+            self.conn.execute(insert("flood", id=cid, amount=limit))
         self.conn.save()
 
     # Filter
     def get_filter(self, cid, key) -> list:
         result: list = self.conn.execute(
-            f"""SELECT caption, file_id, file_type FROM filters
-            WHERE
-                id = '{cid}' AND
-                word = '{key}';"""
+            select("filters", ["caption", "file_id", "file_type"],
+                   {"id": cid, "word": key})
         )
         return result
 
     def get_filters(self, cid) -> None:
-        filters = self.conn.execute(
-            f"SELECT word FROM filters WHERE id = '{cid}';"
+        filters: list = self.conn.execute(
+            select("filters", ["word"], {"id": cid})
         )
         return filters
 
@@ -136,56 +121,49 @@ class crub:
         old_filter: list = self.get_filter(cid, key)
         if old_filter:
             self.conn.execute(
-                f"""UPDATE filters SET
-                    caption = '{caption}',
-                    file_id = '{file_id}',
-                    file_type = '{file_type}'
-                WHERE
-                    id = '{cid}' AND
-                    word = '{key}';"""
+                update(
+                    "filters",
+                    {"id": cid, "word": key},
+                    caption=caption,
+                    file_id=file_id,
+                    file_type=file_type
+                )
             )
         else:
             self.conn.execute(
-                f"""INSERT INTO filters VALUES (
-                    '{cid}',
-                    '{key}',
-                    '{caption}',
-                    '{file_id}',
-                    '{file_type}'
-                );"""
+                insert(
+                    "filters",
+                    id=cid,
+                    caption=caption,
+                    file_id=file_id,
+                    file_type=file_type
+                )
             )
         self.conn.save()
 
     def rem_filter(self, cid: int, key: str) -> None:
-        self.conn.execute(
-            f"DELETE FROM filters WHERE id = '{cid}' AND word = '{key}';"
-        )
+        self.conn.execute(delete("filters", {"id": cid, "word": key}))
         self.conn.save()
 
     # Language
     def get_lang(self, cid: int) -> list:
         result: list = self.conn.execute(
-            f"SELECT code FROM language WHERE id = '{cid}';"
+            select("language", ["code"], {"id": cid})
         )
         return result
 
     def set_lang(self, cid: int, lang: str) -> None:
         old_lang: list = self.get_lang(cid)
         if old_lang:
-            self.conn.execute(
-                f"""UPDATE language SET code = '{lang}'
-                    WHERE id = '{cid}';"""
-            )
+            self.conn.execute(update("language", {"id": cid}, code=lang))
         else:
-            self.conn.execute(
-                f"INSERT INTO language VALUES ('{cid}', '{lang}');"
-            )
+            self.conn.execute(insert("language", id=cid, code=lang))
         self.conn.save()
 
     # Rules
     def get_rules(self, cid: int) -> list:
         result: list = self.conn.execute(
-            f"SELECT rule FROM rules WHERE id = '{cid}';"
+            select("rules", ["rule"], {"id": cid})
         )
         return result
 
@@ -193,9 +171,7 @@ class crub:
         rules = rules.replace("'", "''")
         old_rules: list = self.get_rules(cid)
         if old_rules:
-            self.conn.execute(
-                f"UPDATE FROM rules SET rule = '{rules}' WHERE id = '{cid}';"
-            )
+            self.conn.execute(update("rules", {"id": cid}, rule=rules))
         else:
-            self.conn.execute(f"INSERT INTO rules VALUES ('{cid}', '{rules}')")
+            self.conn.execute(insert("rules", id=cid, rule=rules))
         self.conn.save()
