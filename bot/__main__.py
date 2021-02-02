@@ -9,14 +9,14 @@ import mysql.connector
 import database
 
 
-configs = {
+configs: dict[str] = {
     "CONFIG_URL": "config.ini",
     "BOT_CONFIG": "bot_config.json"
 }
 
 for config in configs.keys():
-    file = configs[config]
-    url = environ.get(config)
+    file: str = configs[config]
+    url: str or None = environ.get(config)
     if not url:
         continue
     print(f"Downloading {file} configuration file...")
@@ -25,26 +25,29 @@ for config in configs.keys():
 
 app = Client("Hamilton-bot")
 app.all = alltypes
-app.conf = load(open("bot_config.json"))
-app.db = database.crub(mysql.connector.connect, **app.conf["mysql"])
-app.langs = {}
+app.conf: dict = load(open("bot_config.json"))
+app.db: database.crub = database.crub(
+    mysql.connector.connect, **app.conf["mysql"]
+)
+app.langs: dict[dict] = {}
 for fname in listdir("lang/"):
-    dots = fname.split(".")
-    if dots[1] != "json":
+    dots: list[str] = fname.split(".")
+    if dots[-1] != "json":
         continue
-    code = dots[0]
-    app.langs[code] = load(open("lang/"+fname))
+    code: str = dots[0]
+    app.langs[code]: dict[dict] = load(open("lang/"+fname))
 
 
-def select_lang(msg, chat_type=None):
-    lang = app.db.get_lang(msg.chat.id)
+def select_lang(msg, chat_type=None) -> str:
+    lang: list[tuple] = app.db.get_lang(msg.chat.id)
     if lang:
-        code = lang[0][0]
+        code: str = lang[0][0]
     else:
-        code = "pt-br"
-    msg.lang = app.langs[code]
+        code: str = "pt-br"
     if chat_type:
-        msg.lang = msg.lang["commands"][chat_type]
+        msg.lang: dict = app.langs["code"]["commands"][chat_type]
+    else:
+        msg.lang: dict = app.langs[code]
     return code
 
 
@@ -52,22 +55,22 @@ app.select_lang = select_lang
 
 
 @app.on_callback_query()
-async def callback(client, msg):
-    args = msg.data.split()
-    command = args[0]
+async def callback(client, msg) -> None:
+    args: list[str] = msg.data.split()
+    command: str = args[0]
     args.pop(0)
     if command == "setlang":
         await client.all.setlang(client, msg, args)
 
 
 @app.on_message(filters.new_chat_members)
-async def new_members(client, msg):
+async def new_members(client, msg) -> None:
     me = await client.get_me()
     client.select_lang(msg)
     try:
-        welcome = app.db.getwelcome(msg.chat.id)
+        welcome: str = app.db.getwelcome(msg.chat.id)[0][0]
     except Exception:
-        welcome = msg.lang["default"]["welcome"]
+        welcome: str = msg.lang["default"]["welcome"]
     chat = msg.chat
     for member in msg.new_chat_members:
         if member.id == me.id:
