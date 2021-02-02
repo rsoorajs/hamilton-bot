@@ -355,7 +355,7 @@ async def handler(client, msg):
     if not msg.text:
         await testflood(client, msg)
         return
-    args = msg.text.split()
+    args = msg.text.split(" ")
     command = args[0]
     args.remove(command)
     if command in for_administrator:
