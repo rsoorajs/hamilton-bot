@@ -45,7 +45,7 @@ def select_lang(msg, chat_type=None) -> str:
     else:
         code: str = "pt-br"
     if chat_type:
-        msg.lang: dict = app.langs["code"]["commands"][chat_type]
+        msg.lang: dict = app.langs[code]["commands"][chat_type]
     else:
         msg.lang: dict = app.langs[code]
     return code
