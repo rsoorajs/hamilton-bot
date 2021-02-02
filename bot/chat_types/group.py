@@ -347,6 +347,7 @@ async def handler(client, msg):
     for_administrator["/setlang"] = client.all.getlangs
     for_all["/help"] = client.all.help
     for_all["/channel"] = client.all.channel
+    for_all["/status"] = client.all.status
     me = await client.get_chat_member(msg.chat.id, "me")
     me.isadmin = me.status == "administrator"
     user = await client.get_chat_member(msg.chat.id, msg.from_user.id)

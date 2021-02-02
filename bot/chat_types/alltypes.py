@@ -1,4 +1,5 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import psutil
 
 
 async def help(client, msg, args):
@@ -60,3 +61,16 @@ async def channel(client, msg, args):
         await msg.reply(
             msg.lang["channel"]["ok"].format(uri=client.conf["channel"])
         )
+
+
+async def status(client, msg, args):
+    cpu = psutil.cpu_freq()
+    cpu_str = f"{int(cpu.current)}/{int(cpu.max)}MHZ ({psutil.cpu_percent()}%)"
+    mem = psutil.virtual_memory()
+    mem_str = f"{mem.used // 1048576}/{mem.total // 1048576}MiB"
+    mem_str += f" ({int((mem.used / mem.total) * 100)}%)"
+    await msg.reply(
+        "Server status\n" +
+        f"Memory: {mem_str}\n" +
+        f"CPU[min={int(cpu.min)}MHZ]: {cpu_str}"
+    )

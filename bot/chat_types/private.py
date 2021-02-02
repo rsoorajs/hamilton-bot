@@ -8,6 +8,7 @@ async def handler(client, msg):
     commands["/setlang"] = client.all.getlangs
     commands["/help"] = client.all.help
     commands["/channel"] = client.all.channel
+    commands["/status"] = client.all.status
     args = msg.text.split()
     command = args[0]
     args.remove(command)
