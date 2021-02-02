@@ -69,8 +69,12 @@ async def status(client, msg, args):
     mem = psutil.virtual_memory()
     mem_str = f"{mem.used // 1048576}/{mem.total // 1048576}MiB"
     mem_str += f" ({int((mem.used / mem.total) * 100)}%)"
+    disk = psutil.disk_usage(".")
+    disk_str = f"{disk.used // (2**30)}/{disk.total // (2**30)}GiB"
+    disk_str += f" ({int(disk.percent)}%)"
     await msg.reply(
-        "Server status\n" +
+        "Server status\n\n" +
         f"Memory: {mem_str}\n" +
-        f"CPU[min={int(cpu.min)}MHZ]: {cpu_str}"
+        f"CPU[min={int(cpu.min)}MHZ]: {cpu_str}\n" +
+        f"Disk: {disk_str}"
     )
