@@ -13,7 +13,7 @@ class connect:
     def __init__(self, func, database=None, *args, **kwargs):
         self.connector = func
         self.login: list = [args, kwargs]
-        self.database: str or None = database
+        self.database: str = database
         self.db = self.connect()
 
     def connect(self) -> None:
@@ -104,7 +104,7 @@ class crub:
         return result
 
     def set_flood(self, cid: int, limit: int) -> None:
-        flood = self.get_flood(cid)
+        flood: list = self.get_flood(cid)
         if flood:
             self.conn.execute(
                 f"UPDATE flood SET amount = '{limit}' WHERE id = '{cid}';"

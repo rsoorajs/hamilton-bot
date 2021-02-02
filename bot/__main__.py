@@ -9,7 +9,7 @@ import mysql.connector
 import database
 
 
-configs: dict[str] = {
+configs: dict = {
     "CONFIG_URL": "config.ini",
     "BOT_CONFIG": "bot_config.json"
 }
@@ -29,17 +29,17 @@ app.conf: dict = load(open("bot_config.json"))
 app.db: database.crub = database.crub(
     mysql.connector.connect, **app.conf["mysql"]
 )
-app.langs: dict[dict] = {}
+app.langs: dict = {}
 for fname in listdir("lang/"):
-    dots: list[str] = fname.split(".")
+    dots: list = fname.split(".")
     if dots[-1] != "json":
         continue
     code: str = dots[0]
-    app.langs[code]: dict[dict] = load(open("lang/"+fname))
+    app.langs[code]: dict = load(open("lang/"+fname))
 
 
 def select_lang(msg, chat_type=None) -> str:
-    lang: list[tuple] = app.db.get_lang(msg.chat.id)
+    lang: list = app.db.get_lang(msg.chat.id)
     if lang:
         code: str = lang[0][0]
     else:
@@ -56,7 +56,7 @@ app.select_lang = select_lang
 
 @app.on_callback_query()
 async def callback(client, msg) -> None:
-    args: list[str] = msg.data.split()
+    args: list = msg.data.split()
     command: str = args[0]
     args.pop(0)
     if command == "setlang":
