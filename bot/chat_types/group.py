@@ -14,17 +14,22 @@ async def testfilters(client, msg):
         "animation": client.send_animation,
         "voice": client.send_voice
     }
+    text = msg.text
     filters = client.db.get_filters(msg.chat.id)
-    for f in filters:
-        mtext = msg.text
-        if not ((" " in f[0] and f[0] in mtext) or (f[0] in mtext.split())):
+    for fname in filters:
+        fname = fname[0]
+        if not (
+            (" " in fname and fname in text) or
+            (fname in text.split())
+          ):
             continue
-        text, file_id, file_type = client.db.get_filter(msg.chat.id, f[0])[0]
+        text, file_id, file_type = client.db.get_filter(msg.chat.id, fname)[0]
         if file_id:
             kwargs = {
                 "chat_id": msg.chat.id,
                 "reply_to_message_id": msg.message_id
             }
+            print(file_type)
             if text:
                 kwargs["caption"] = text
             for k in senders.keys():
@@ -136,42 +141,41 @@ async def setflood(client, msg, args):
         await msg.reply(msg.lang["setflood"]["no_limit"])
         return
     try:
-        c = int(args[0])
+        limit = int(args[0])
     except Exception:
         await msg.reply(msg.lang["setflood"]["need_number"])
         return
-    if c < 3:
+    if limit < 3:
         await msg.reply(msg.lang["setflood"]["minimium"])
         return
     try:
-        client.db.set_flood(msg.chat.id, c)
-    except Exception as error:
-        print(error)
+        client.db.set_flood(msg.chat.id, limit)
+    except Exception:
         await msg.reply(msg.lang["setflood"]["failed"])
         return
     await msg.reply(msg.lang["setflood"]["ok"])
 
 
 async def getflood(client, msg, args=None):
-    r = client.db.get_flood(msg.chat.id)
-    if not r:
-        r = 5
+    limit = client.db.get_flood(msg.chat.id)
+    if not limit:
+        limit = 5
     else:
-        r = r[0][0]
-    await msg.reply(msg.lang["getflood"]["ok"].format(limit=r))
+        limit = limit[0][0]
+    await msg.reply(msg.lang["getflood"]["ok"].format(limit=limit))
 
 
 # Filtros de mensagens
 async def addfilter(client, msg, args):
     kwargs = {"cid": msg.chat.id}
     text_t = " ".join(args)
-    key_t = search("[\"|'].*[\"|']", text_t)
+    key_t = search("[\"|'].*[\"|']", text_t)  # Procura por chaves entre aspas
     if "group" in dir(key_t):
         kwargs["key"] = key_t.group()[1:-1]
         kwargs["caption"] = text_t.replace(key_t.group(), "")
     elif len(text_t.split()) >= 1:
         kwargs["key"] = args[0]
-        kwargs["caption"] = text_t.replace(args[0], "")
+        kwargs["caption"] = text_t.replace(args[0], "").strip()
     if msg.reply_to_message:
         reply = msg.reply_to_message
         if reply.text:
@@ -183,31 +187,30 @@ async def addfilter(client, msg, args):
                     "document", "sticker", "audio",
                     "voice", "photo", "video", "animation"
                 ]
-            for f in types:
-                if reply[f]:
-                    kwargs["file_id"] = reply[f].file_id
-                    kwargs["file_type"] = f
+            for ftype in types:
+                if reply[ftype]:
+                    kwargs["file_id"] = reply[ftype].file_id
+                    kwargs["file_type"] = ftype
                     break
     if "key" not in kwargs:
         await msg.reply(msg.lang["addfilter"]["no_key"])
         return
     try:
         client.db.add_filter(**kwargs)
-    except Exception as error:
-        print(error)
+    except Exception:
         await msg.reply(msg.lang["addfilter"]["failed"])
         return
     await msg.reply(msg.lang["addfilter"]["ok"])
 
 
 async def getfilters(client, msg, args=None):
-    r = client.db.get_filters(msg.chat.id)
-    if not r:
+    filters = client.db.get_filters(msg.chat.id)
+    if not filters:
         await msg.reply(msg.lang["getfilters"]["no_filters"])
         return
     text = msg.lang["getfilters"]["ok"] + "\n\n"
-    for f in r:
-        text += "- `" + f[0] + "`\n"
+    for filter_name in filters:
+        text += "- `" + filter_name[0] + "`\n"
     await msg.reply(text)
 
 
@@ -215,8 +218,8 @@ async def remfilter(client, msg, args):
     if not args:
         await msg.reply(msg.lang["remfilter"]["no_filter"])
         return
-    f = args[0]
-    client.db.rem_filter(msg.chat.id, f)
+    filter_name = args[0]
+    client.db.rem_filter(msg.chat.id, filter_name)
     await msg.reply(msg.lang["remfilter"]["ok"])
 
 
@@ -262,11 +265,11 @@ async def setrules(client, msg, args):
 
 
 async def getrules(client, msg, args):
-    r = client.db.get_rules(msg.chat.id)
-    if not r:
+    rules = client.db.get_rules(msg.chat.id)
+    if not rules:
         await msg.reply(msg.lang["rules"]["no_rules"])
     else:
-        await msg.reply(r[0][0])
+        await msg.reply(rules[0][0])
 
 
 # Silenciar
@@ -285,7 +288,7 @@ async def mute(client, msg, args):
             msg.chat.id,
             uid,
             ChatPermissions(),
-            int(time() + 2073600)
+            int(time() + 86400)
         )
     except Exception:
         await msg.reply(msg.lang["mute"]["failed"])
@@ -306,8 +309,7 @@ async def unmute(client, msg, args):
             uid,
             ChatPermissions(**permissions)
         )
-    except Exception as error:
-        print(error)
+    except Exception:
         await msg.reply(msg.lang["unmute"]["failed"])
         return
     await msg.reply(msg.lang["unmute"]["ok"])

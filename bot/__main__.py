@@ -14,8 +14,7 @@ configs: dict = {
     "BOT_CONFIG": "bot_config.json"
 }
 
-for config in configs.keys():
-    file: str = configs[config]
+for config, file in configs.items():
     url: str or None = environ.get(config)
     if not url:
         continue
@@ -44,10 +43,9 @@ def select_lang(msg, chat_type=None) -> str:
         code: str = lang[0][0]
     else:
         code: str = "pt-br"
+    msg.lang: dict = app.langs[code]
     if chat_type:
-        msg.lang: dict = app.langs[code]["commands"][chat_type]
-    else:
-        msg.lang: dict = app.langs[code]
+        msg.lang: dict = msg.lang["commands"][chat_type]
     return code
 
 

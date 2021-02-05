@@ -56,20 +56,44 @@ class crub:
         self.conn = connect(sql, database, *args, **kwargs)
         if database:
             self.conn.execute(f"USE {database};")
-        self.conn.execute(create_table("flood", id="bigint", amount="bigint"))
-        self.conn.execute(create_table("welcome", id="bigint", hello="text"))
+        self.conn.execute(
+            create_table(
+                "flood",
+                id="bigint not null",
+                amount="int(10) not null"
+            )
+        )
+        self.conn.execute(
+            create_table(
+                "welcome",
+                id="bigint not null",
+                hello="varchar(4096) not null"
+            )
+        )
         self.conn.execute(
             create_table(
                 "filters",
-                id="bigint",
-                word="text",
-                caption="text",
+                id="bigint not null",
+                word="text not null",
+                caption="text not null",
                 file_id="text",
                 file_type="text"
             )
         )
-        self.conn.execute(create_table("language", id="bigint", code="text"))
-        self.conn.execute(create_table("rules", id="bigint", rule="text"))
+        self.conn.execute(
+            create_table(
+                "language",
+                id="bigint not null",
+                code="varchar(10) not null"
+            )
+        )
+        self.conn.execute(
+            create_table(
+                "rules",
+                id="bigint",
+                rule="varchar(4096) not null"
+            )
+        )
         self.conn.save()
 
     # Welcome
@@ -116,8 +140,8 @@ class crub:
         )
         return filters
 
-    def add_filter(self, cid: int, key: str, caption: str = "",
-                   file_id: str = "", file_type: int = "") -> None:
+    def add_filter(self, cid: int, key: str, caption: str = None,
+                   file_id: str = None, file_type: int = None) -> None:
         old_filter: list = self.get_filter(cid, key)
         if old_filter:
             self.conn.execute(
@@ -134,6 +158,7 @@ class crub:
                 insert(
                     "filters",
                     id=cid,
+                    word=key,
                     caption=caption,
                     file_id=file_id,
                     file_type=file_type
