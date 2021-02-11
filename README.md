@@ -2,6 +2,8 @@
 
 **Esté projeto ainda está em construção e não deve ser usado em grupos grandes.**
 
+O código dele também só está sendo testado em sistemas linux.
+
 # Instalação das dependências
 
 Para instalar as dependências é simples, você só precisa executar `pip3 install -r requirements.txt`, se não for é só rodar com `sudo` no começo.

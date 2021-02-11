@@ -1,6 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
-from chat_types import alltypes, group, private
+from chat_types import group, private
 from json import load
 from os import listdir, environ
 from urllib.request import urlretrieve
@@ -23,7 +23,6 @@ for config, file in configs.items():
     print("Complete")
 
 app = Client("Hamilton-bot")
-app.all = alltypes
 app.conf: dict = load(open("bot_config.json"))
 app.db: database.crub = database.crub(
     mysql.connector.connect, **app.conf["mysql"]

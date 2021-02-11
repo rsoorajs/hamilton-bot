@@ -7,8 +7,8 @@ async def help(client, msg, args):
     await msg.reply(msg.lang["help"]["ok"])
 
 
-# Escolha e lista de linguagens
-# - Callback de resposta
+# Choose of languages
+# - Callback of response
 async def setlang(client, callback, args):
     msg = callback.message
     client.select_lang(msg, "all")
@@ -38,7 +38,7 @@ async def setlang(client, callback, args):
     await client.answer_callback_query(callback.id, "Ok.")
 
 
-# - Envia a lista de botões com os idiomas
+# - Send buttons to choose a language
 async def getlangs(client, msg, args):
     client.select_lang(msg, "all")
     text = msg.lang["setlang"]["select"] + "\n\n"
@@ -55,6 +55,7 @@ async def getlangs(client, msg, args):
     await msg.reply(text, reply_markup=InlineKeyboardMarkup(buttons))
 
 
+# Channel of updates from bot
 async def channel(client, msg, args):
     client.select_lang(msg, "all")
     if "channel" in client.conf:
@@ -63,14 +64,15 @@ async def channel(client, msg, args):
         )
 
 
+# Stats of server computer
 async def status(client, msg, args):
     cpu = psutil.cpu_freq()
-    cpu_str = f"{int(cpu.current)}/{int(cpu.max)}MHZ ({psutil.cpu_percent()}%)"
+    cpu_str: str = f"{int(cpu.current)}/{int(cpu.max)}MHZ ({psutil.cpu_percent()}%)"
     mem = psutil.virtual_memory()
-    mem_str = f"{mem.used // 1048576}/{mem.total // 1048576}MiB"
+    mem_str: str = f"{mem.used // 1048576}/{mem.total // 1048576}MiB"
     mem_str += f" ({int((mem.used / mem.total) * 100)}%)"
     disk = psutil.disk_usage(".")
-    disk_str = f"{disk.used // (2**30)}/{disk.total // (2**30)}GiB"
+    disk_str: str = f"{disk.used // (2**30)}/{disk.total // (2**30)}GiB"
     disk_str += f" ({int(disk.percent)}%)"
     await msg.reply(
         "Server status\n\n" +

@@ -9,7 +9,7 @@ class connect:
         self.connector = func
         self.login: list = [args, kwargs]
         self.database: str = database
-        self.db = self.connect()
+        self.connect()
 
     def connect(self) -> None:
         self.connection = self.connector(*self.login[0], **self.login[1])

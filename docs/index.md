@@ -1,7 +1,9 @@
 Hamilton Bot
 ============
 
-Bot para adiministração de grupos do Telgram em desenvolvimento usando o Pyrogram como framework de conexão com o mensageiro, todos os comandos de um bot normal em um bot normal de telegram com algumas funções extras e correções de funções de outros.
+Bot para administração de grupos do Telegram em desenvolvimento usando o Pyrogram como framework de conexão com o mensageiro;
+
+Todos os comandos comuns de outros bots junto com alguns outros que não são muito comuns e melhorias dos existentes.
 
 Artigos:
 
