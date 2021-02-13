@@ -50,9 +50,5 @@ $ python3 bot.py
 
 E pronto! se tudo estiver certo ele vai rodar o bot e você podera usar tranquilamente.
 
-# Bot em funcionamento no privado
-
-![Bot em uso no privado](files/uso.gif)
-
 [My Telegram]: <https://my.telegram.org>
 [@BotFather]: <https://t.me/BotFather>
