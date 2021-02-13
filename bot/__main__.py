@@ -1,6 +1,6 @@
 from pyrogram import Client, filters
 from pyrogram.handlers import MessageHandler
-from chat_types import group, private
+from chat_types import group, private, alltypes
 from json import load
 from os import listdir, environ
 from urllib.request import urlretrieve
@@ -57,7 +57,7 @@ async def callback(client, msg) -> None:
     command: str = args[0]
     args.pop(0)
     if command == "setlang":
-        await client.all.setlang(client, msg, args)
+        await alltypes.setlang(client, msg, args)
 
 
 @app.on_message(filters.new_chat_members)
