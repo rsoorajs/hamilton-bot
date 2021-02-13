@@ -326,7 +326,7 @@ for_administrator: dict = {
 }
 
 for_all: dict = {
-    "/start": lambda client, msg, args: msg.reply(msg.lang["start"]["ok"]),
+    "/start": alltypes.start,
     "/flood": getflood,
     "/filters": getfilters,
     "/kickme": kickme,

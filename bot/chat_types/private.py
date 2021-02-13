@@ -1,7 +1,7 @@
 from chat_types import alltypes
 
 commands = {
-    "/start": lambda client, msg, args: msg.reply(msg.lang["start"]["ok"]),
+    "/start": alltypes.start,
     "/setlang": alltypes.getlangs,
     "/help": alltypes.help,
     "/channel": alltypes.channel,

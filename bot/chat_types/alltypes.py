@@ -6,6 +6,9 @@ async def help(client, msg, args):
     client.select_lang(msg, "all")
     await msg.reply(msg.lang["help"]["ok"])
 
+async def start(client, msg, args):
+    client.select_lang(msg, "all")
+    await msg.reply(msg.lang["start"]["ok"])
 
 # Choose of languages
 # - Callback of response

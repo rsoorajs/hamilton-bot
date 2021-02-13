@@ -5,6 +5,9 @@
     },
     "commands": {
         "all": {
+            "start": {
+                "ok": "Olá, sou um bot de administração de grupos para telegram e estou em desenvolvimento."
+            },
             "setlang": {
                 "not_found": "Idioma não encontrado!",
                 "not_admin": "Você não é um adminstrador!",
@@ -19,9 +22,6 @@
             }
         },
         "group": {
-            "start": {
-                "ok": "Olá, posso administrar esse grupo, para isso você só precisa me dar admin e me configurar."
-            },
             "ban": {
                 "no_user": "Quem eu devo banir? :)",
                 "failed": "Falha ao banir usuário!",
@@ -98,10 +98,6 @@
                 "ok": "Ok, agora o usuário pode voltar a falar no grupo."
             }
         },
-        "private": {
-            "start": {
-                "ok": "Olá, sou um bot de administração de grupos para telegram e estou em desenvolvimento."
-            }
-        }
+        "private": {}
     }
 }
