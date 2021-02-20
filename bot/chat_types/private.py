@@ -5,7 +5,8 @@ commands = {
     "/setlang": alltypes.getlangs,
     "/help": alltypes.help,
     "/channel": alltypes.channel,
-    "/status": alltypes.status
+    "/status": alltypes.status,
+    "/donate": alltypes.donate
 }
 
 

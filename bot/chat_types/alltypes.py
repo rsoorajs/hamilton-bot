@@ -10,6 +10,23 @@ async def start(client, msg, args):
     client.select_lang(msg, "all")
     await msg.reply(msg.lang["start"]["ok"])
 
+async def donate(client, msg, args):
+    if "donations" not in client.conf:
+        return None
+    client.select_lang(msg, "all")
+    donationsTypes: str = ""
+    for donationType, url in client.conf["donations"].items():
+        if donationType == "others":
+            continue
+        donationsTypes += f" - [{donationType}]({url})\n"
+    await msg.reply(
+        msg.lang["donate"]["ok"].format(
+            donations=donationsTypes,
+            user=client.conf["donations"]["others"]
+        ),
+        disable_web_page_preview=True
+    )
+
 # Choose of languages
 # - Callback of response
 async def setlang(client, callback, args):

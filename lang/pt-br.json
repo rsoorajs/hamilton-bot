@@ -19,6 +19,9 @@
             },
             "channel": {
                 "ok": "Participe do canal do bot para ficar sabendo sobre as atualizações, é só clicar [aqui]({uri})!"
+            },
+            "donate": {
+                "ok": "Eu tenho as seguintes formas de receber doações:\n\n{donations}\nMas se nenhum serve para você, então o {user} pode conseguir alguma que sirva ;)"
             }
         },
         "group": {

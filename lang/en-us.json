@@ -19,6 +19,9 @@
             },
             "channel": {
                 "ok": "Join the bot channel to learn about the updates, just click [here]({uri})!"
+            },
+            "donate": {
+                "ok": "I have the next donations forms:\n\n{donations}\nOr open a new chat with {user} to request other form ;)"
             }
         },
         "group": {
