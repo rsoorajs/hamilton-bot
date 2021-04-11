@@ -100,7 +100,6 @@
                 "failed": "Falha ao mudar permissões do usuário!",
                 "ok": "Ok, agora o usuário pode voltar a falar no grupo."
             }
-        },
-        "private": {}
+        }
     }
 }

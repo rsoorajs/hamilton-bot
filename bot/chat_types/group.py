@@ -333,8 +333,7 @@ for_all: dict = {
     "/rules": getrules,
     "/help": alltypes.help,
     "/channel": alltypes.channel,
-    "/status": alltypes.status,
-    "/donate": alltypes.donate
+    "/status": alltypes.status
 }
 
 
